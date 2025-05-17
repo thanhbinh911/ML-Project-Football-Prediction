@@ -23,9 +23,11 @@ map_values = {
     "Sheffield United": "Sheffield Utd",
     "Newcastle United": "Newcastle Utd",
 }
+
 mapping = MisssingDict(map_values)
 matches["Team"] = matches["Team"].map(mapping)
 matches["Round"] = matches["Round"].str.extract(r"(\d+)").astype(int)
+
 
 matches["Date"] = pd.to_datetime(matches["Date"])
 matches["Venue_Code"] = matches["Venue"].astype("category").cat.codes
@@ -64,6 +66,7 @@ matches["Hour"] = matches["Time"].str.extract(r"(\d{2}:\d{2})")
 matches["Hour"] = matches["Hour"].str.replace(r":.+", "", regex=True).astype(int)
 matches["day_code"] = matches["Date"].dt.dayofweek
 matches["target"] = (matches["Result"] == "W").astype(int)
+
 matches["is_unbeaten"] = matches["Result"].isin(["W", "D"])
 matches["is_unbeaten_shifted"] = matches.groupby(["Team", "Season"])[
     "is_unbeaten"
@@ -118,6 +121,7 @@ matches = matches.merge(previous_season_ranks, on=["Season", "Team"], how="left"
 matches.rename(columns={"Season_Rank": "home_ranking_last_season"}, inplace=True)
 matches["home_ranking_last_season"] = matches["home_ranking_last_season"].fillna(-1)
 
+# manually handle the first season in the dataset
 earliest_season = matches["Season"].min()
 previous_season_rankings = {
     "Arsenal": 3,
@@ -141,6 +145,7 @@ previous_season_rankings = {
     "Norwich City": -1,
     "Aston Villa": 17,
 }
+
 matches.loc[matches["Season"] == earliest_season, "home_ranking_last_season"] = (
     matches.loc[matches["Season"] == earliest_season, "Team"].map(
         previous_season_rankings
@@ -190,6 +195,7 @@ predictors = [
     "LastSeasonRank",
     "PromotedMatchup",
 ]
+
 matchesB = matches[
     [
         "Round",
@@ -237,6 +243,7 @@ if __name__ == "__main__":
         RandomizedSearchCV,
         StratifiedKFold,
     )
+
     from sklearn.ensemble import RandomForestClassifier
     from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
     from scipy.stats import randint
@@ -254,6 +261,7 @@ if __name__ == "__main__":
         "max_features": ["sqrt", "log2"],
         "bootstrap": [True],
     }
+
     rf = RandomForestClassifier(random_state=42)
     cv_strategy = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     random_search = RandomizedSearchCV(
@@ -267,6 +275,7 @@ if __name__ == "__main__":
         random_state=42,
         return_train_score=True,
     )
+
     random_search.fit(X_train_val, y_train_val)
     print("Best Parameters found: ", random_search.best_params_)
     print("Best Cross-validation Score: {:.4f}".format(random_search.best_score_))
