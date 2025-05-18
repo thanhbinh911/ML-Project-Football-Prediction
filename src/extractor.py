@@ -26,5 +26,5 @@ def extract_features(stats_df, home_team, away_team, round_num, season):
         "PromotedMatchup",
     ]
 
-    features = row[predictors].values.flatten()
+    features = row[predictors]
     return features

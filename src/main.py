@@ -3,14 +3,14 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import joblib
-from extractor import extract_features
-from train_model import matchesB
+from src.extractor import extract_features
+from src.feature_engineering import matchesB
+
 
 app = FastAPI()
 templates = Jinja2Templates(directory="Template")
 app.mount("/static", StaticFiles(directory="Static"), name="static")
-
-model = joblib.load("football_rf_model.pkl")
+model = joblib.load("models/football_rf_model.pkl")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -28,7 +28,7 @@ async def predict_result(
 ):
     try:
         features = extract_features(matchesB, Team, Opponent, Round, Season)
-        prediction = model.predict([features])[0]
+        prediction = model.predict(features)[0]
         result = "Win" if prediction == 1 else "Non-Win"
         return templates.TemplateResponse(
             "result.html", {"request": request, "prediction": result}
