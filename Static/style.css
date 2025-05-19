@@ -1,15 +1,59 @@
 body {
-    font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(rgba(10, 20, 60, 0.7), rgba(10, 20, 60, 0.7)),
+        url('/static/fifa.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
-input,
-button {
-    padding: 8px;
-    margin: 8px 0;
-    width: 100%;
+.main-content {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card,
+.result-card {
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(2px);
+}
+
+.card-header {
+    background: linear-gradient(90deg, #1e3c72 60%, #2a5298 100%);
+    border-radius: 20px 20px 0 0;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #1e3c72;
+}
+
+.btn-success {
+    background: linear-gradient(90deg, #28a745 60%, #218838 100%);
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.btn-success:hover {
+    background: linear-gradient(90deg, #218838 60%, #28a745 100%);
+}
+
+.result-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1e3c72;
+}
+
+@media (max-width: 576px) {
+
+    .card,
+    .result-card {
+        margin: 10px;
+    }
 }
