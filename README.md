@@ -26,7 +26,7 @@ III. Restrictions
 
 
 IV. How to run this project
-- Clone this url "https://github.com/thanhbinh911/ML-Project-Football-Prediction" to your local machine
+- Clone this url repo: "https://github.com/thanhbinh911/ML-Project-Football-Prediction" to your local machine
 - Run conda env export > environment.yml in your terminal/cmd to reproduce the environment (we using conda to manage libray and enviroment in this project)
 - in the cwd, run the folling command: 'uvicorn src.main:app --reload' to initiate the local sever
 - Go the this URL: http://127.0.0.1:8000 
